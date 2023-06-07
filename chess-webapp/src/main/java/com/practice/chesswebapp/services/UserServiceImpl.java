@@ -1,11 +1,14 @@
 package com.practice.chesswebapp.services;
 
 import com.practice.chesswebapp.dtos.UserDto;
+import com.practice.chesswebapp.entities.Role;
 import com.practice.chesswebapp.entities.User;
+import com.practice.chesswebapp.repositories.RoleRepository;
 import com.practice.chesswebapp.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,10 +16,12 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -29,6 +34,12 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userDto.getUsername());
         user.setElo(300);
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+
+        Role role = roleRepository.findByName("ROLE_ADMIN");
+        if(role == null){
+            role = checkRoleExist();
+        }
+        user.setRoles(Arrays.asList(role));
 
         userRepository.save(user);
     }
@@ -59,5 +70,11 @@ public class UserServiceImpl implements UserService {
         userDto.setEmail(user.getEmail());
         userDto.setElo(userDto.getElo());
         return userDto;
+    }
+
+    private Role checkRoleExist(){
+        Role role = new Role();
+        role.setName("ROLE_ADMIN");
+        return roleRepository.save(role);
     }
 }
