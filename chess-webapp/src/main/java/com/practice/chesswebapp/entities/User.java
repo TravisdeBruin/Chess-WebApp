@@ -19,8 +19,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name="users")
-public class User
-{
+public class User {
     private static final long serialVersionUID = 1L;
 
     @Id
