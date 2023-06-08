@@ -1,12 +1,20 @@
 package com.practice.chesswebapp.services;
 
 import com.practice.chesswebapp.dtos.UserDto;
+import com.practice.chesswebapp.entities.Role;
+import com.practice.chesswebapp.entities.User;
+import com.practice.chesswebapp.enums.ERole;
 import com.practice.chesswebapp.mappers.UserMapper;
+import com.practice.chesswebapp.repositories.RoleRepository;
 import com.practice.chesswebapp.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
@@ -14,18 +22,57 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
     private UserMapper userMapper;
-//    private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
         this.userMapper = userMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UserDto saveNewUser(UserDto userDto) {
+        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        User newUser = userMapper.userDtoToUser(userDto);
+        newUser.setPassword(encodedPassword);
+
+        Set<String> strRoles = userDto.getRole();
+        List<Role> roles = new ArrayList<>();
+
+        if (strRoles == null) {
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        } else {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(adminRole);
+
+                        break;
+                    case "mod":
+                        Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(modRole);
+
+                        break;
+                    default:
+                        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                        roles.add(userRole);
+                }
+            });
+        }
+
+        newUser.setRoles(roles);
+
         return userMapper.userToUserDto(userRepository
-                .save(userMapper.userDtoToUser(userDto)));
+                .save(newUser));
     }
 
     @Override
@@ -68,5 +115,15 @@ public class UserServiceImpl implements UserService {
         });
 
         return atomicReference.get();
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

@@ -2,7 +2,9 @@ package com.practice.chesswebapp.controllers;
 
 import com.practice.chesswebapp.dtos.UserDto;
 import com.practice.chesswebapp.exceptions.NotFoundException;
+import com.practice.chesswebapp.responses.MessageResponse;
 import com.practice.chesswebapp.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,16 +39,6 @@ public class UserController {
         }
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping(USER_PATH)
-    public ResponseEntity handlePost(@RequestBody UserDto userDto){
-        UserDto savedUser = userService.saveNewUser(userDto);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", USER_PATH + "/" + savedUser.getId().toString());
-
-        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
     @GetMapping(USER_PATH)

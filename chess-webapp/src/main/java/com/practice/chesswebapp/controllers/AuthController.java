@@ -1,83 +1,74 @@
 package com.practice.chesswebapp.controllers;
 
+import com.practice.chesswebapp.responses.JwtResponse;
 import com.practice.chesswebapp.dtos.UserDto;
-import com.practice.chesswebapp.entities.User;
+import com.practice.chesswebapp.repositories.RoleRepository;
+import com.practice.chesswebapp.responses.MessageResponse;
+import com.practice.chesswebapp.security.jwt.JwtUtils;
+import com.practice.chesswebapp.services.UserDetailsImpl;
 import com.practice.chesswebapp.services.UserService;
 import jakarta.validation.Valid;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
+    private AuthenticationManager authenticationManager;
+    private UserService userService;
+    private JwtUtils jwtUtils;
 
-//    private UserService userService;
-//
-//    public AuthController(UserService userService) {
-//        this.userService = userService;
-//    }
-//    // handler method to handle home page request
-//    @GetMapping("/index")
-//    public String home(){
-//        return "index";
-//    }
-//
-//    // handler method to handle user registration form request
-//    @GetMapping("/register")
-//    public String showRegistrationForm(Model model){
-//        // create model object to store form data
-//        UserDto user = new UserDto();
-//        model.addAttribute("user", user);
-//        return "register";
-//    }
-//
-//    // handler method to handle user registration form submit request
-//    @PostMapping("/register/save")
-//    public String registration(@Valid @ModelAttribute("user") UserDto userDto,
-//                               BindingResult result,
-//                               Model model){
-//        User existingEmail = userService.findUserByEmail(userDto.getEmail());
-//
-//        User existingUsername = userService.findUserByUsername(userDto.getUsername());
-//
-//        Boolean validEmail = existingEmail != null && existingEmail.getEmail() != null && !existingEmail.getEmail().isEmpty();
-//        Boolean validUsername = existingUsername != null && existingUsername.getUsername() != null && !existingUsername.getUsername().isEmpty();
-//
-//        if(!validEmail){
-//            result.rejectValue("email", null,
-//                    "There is already an account registered with the same email");
-//        }
-//
-//        if(!validUsername){
-//            result.rejectValue("username", null,
-//                    "There is already an account registered with the same username");
-//        }
-//
-//        if(result.hasErrors()){
-//            model.addAttribute("user", userDto);
-//            return "/register";
-//        }
-//
-//        userService.saveUser(userDto);
-//        return "redirect:/register?success";
-//    }
-//
-//    // handler method to handle list of users
-//    @GetMapping("/users")
-//    public String users(Model model){
-//        List<UserDto> users = userService.findAllUsers();
-//        model.addAttribute("users", users);
-//        return "users";
-//    }
-//
-//    // handler method to handle login request
-//    @GetMapping("/login")
-//    public String login(){
-//        return "login";
-//    }
+    public AuthController(AuthenticationManager authenticationManager, UserService userService, JwtUtils jwtUtils) {
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+        this.jwtUtils = jwtUtils;
+    }
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@Valid @RequestBody UserDto userDto){
+        if (userService.existsByUsername(userDto.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+
+        if (userService.existsByEmail(userDto.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
+
+        UserDto savedUser = userService.saveNewUser(userDto);
+
+        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    @PostMapping("/signin")
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody UserDto userDto) {
+
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
+
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(jwt,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
+    }
 }

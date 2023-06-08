@@ -22,17 +22,14 @@ public class UserDto {
 
     private Long id;
 
-    @NotEmpty
     private String name;
 
-    @NotEmpty
     private String surname;
 
-    @NotEmpty
+    @NotEmpty(message = "Username should not be empty")
     @Column(unique = true, nullable = false)
     private String username;
 
-    @NotEmpty(message = "Email should not be empty")
     @Email
     @Column(unique = true, nullable = false)
     private String email;
@@ -43,4 +40,5 @@ public class UserDto {
 
     private Integer elo;
 
+    private Set<String> role;
 }
