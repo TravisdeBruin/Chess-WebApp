@@ -1,13 +1,15 @@
 package com.practice.chesswebapp.services;
 
 import com.practice.chesswebapp.dtos.UserDto;
-import com.practice.chesswebapp.entities.User;
+
 import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
-    void saveUser(UserDto userDto);
-
-    User findUserByEmail(String email);
-    User findUserByUsername(String username);
-    List<UserDto> findAllUsers();
+    UserDto saveNewUser(UserDto userDto);
+    Optional<UserDto> getUserByEmail(String email);
+    Optional<UserDto> getUserByUsername(String username);
+    List<UserDto> getAllUsers();
+    Boolean deleteByUserId(Long id);
+    Optional<UserDto> updateByUserId(Long id, UserDto userDto);
 }

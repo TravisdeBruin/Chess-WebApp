@@ -1,80 +1,72 @@
 package com.practice.chesswebapp.services;
 
 import com.practice.chesswebapp.dtos.UserDto;
-import com.practice.chesswebapp.entities.Role;
-import com.practice.chesswebapp.entities.User;
-import com.practice.chesswebapp.repositories.RoleRepository;
+import com.practice.chesswebapp.mappers.UserMapper;
 import com.practice.chesswebapp.repositories.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
-    private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder;
+    private UserMapper userMapper;
+//    private PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.userMapper = userMapper;
     }
 
     @Override
-    public void saveUser(UserDto userDto) {
-        User user = new User();
-        user.setName(userDto.getName());
-        user.setSurname(userDto.getSurname());
-        user.setEmail(userDto.getEmail());
-        user.setUsername(userDto.getUsername());
-        user.setElo(300);
-        user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-
-        Role role = roleRepository.findByName("ROLE_ADMIN");
-        if(role == null){
-            role = checkRoleExist();
-        }
-        user.setRoles(Arrays.asList(role));
-
-        userRepository.save(user);
+    public UserDto saveNewUser(UserDto userDto) {
+        return userMapper.userToUserDto(userRepository
+                .save(userMapper.userDtoToUser(userDto)));
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public Optional<UserDto> getUserByEmail(String email) {
+        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findByEmail(email).orElse(null)));
     }
 
     @Override
-    public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public Optional<UserDto> getUserByUsername(String username) {
+        return Optional.ofNullable(userMapper.userToUserDto(userRepository.findByUsername(username).orElse(null)));
     }
 
     @Override
-    public List<UserDto> findAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream()
-                .map((user) -> mapToUserDto(user))
+    public List<UserDto> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(userMapper::userToUserDto)
                 .collect(Collectors.toList());
     }
 
-    private UserDto mapToUserDto(User user){
-        UserDto userDto = new UserDto();
-        userDto.setName(user.getName());
-        userDto.setSurname(user.getSurname());
-        userDto.setUsername(user.getUsername());
-        userDto.setEmail(user.getEmail());
-        userDto.setElo(userDto.getElo());
-        return userDto;
+    @Override
+    public Boolean deleteByUserId(Long id) {
+        if(userRepository.existsById(id)){
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
-    private Role checkRoleExist(){
-        Role role = new Role();
-        role.setName("ROLE_ADMIN");
-        return roleRepository.save(role);
+    @Override
+    public Optional<UserDto> updateByUserId(Long id, UserDto userDto) {
+        AtomicReference<Optional<UserDto>> atomicReference = new AtomicReference<>();
+
+        userRepository.findById(id).ifPresentOrElse(foundUser -> {
+            foundUser.setName(userDto.getName());
+            foundUser.setSurname(userDto.getSurname());
+            atomicReference.set(Optional.of(userMapper
+                    .userToUserDto(userRepository.save(foundUser))));
+        }, () -> {
+            atomicReference.set(Optional.empty());
+        });
+
+        return atomicReference.get();
     }
 }
