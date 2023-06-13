@@ -1,0 +1,40 @@
+<div>
+  <form
+    *ngIf="!isLoggedIn"
+    action=""
+    method="get"
+    class="form-example"
+    (ngSubmit)="f.form.valid && onSubmit()"
+    #f="ngForm"
+    novalidate
+    name="loginForm"
+  >
+    <div class="form-example">
+      <label for="username">Enter your Username: </label>
+      <input
+        type="text"
+        name="username"
+        id="username"
+        [(ngModel)]="user.username"
+        required
+        #username="ngModel"
+        [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
+      />
+    </div>
+    <div class="form-example">
+      <label for="password">Enter your Password: </label>
+      <input
+        type="password"
+        name="password"
+        id="password"
+        [(ngModel)]="user.password"
+        required
+        #password="ngModel"
+        [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+      />
+    </div>
+    <div class="form-example">
+      <input type="submit" value="Login" />
+    </div>
+  </form>
+</div>

@@ -1,0 +1,76 @@
+<form
+  *ngIf="!isSuccessful"
+  action=""
+  method="get"
+  class="form-example"
+  (ngSubmit)="f.form.valid && onSubmit()"
+  #f="ngForm"
+  novalidate
+>
+  <div class="form-example">
+    <label for="name">Enter your Name: </label>
+    <input
+      [(ngModel)]="user.name"
+      type="text"
+      name="name"
+      id="name"
+      [ngClass]="{ 'is-invalid': f.submitted }"
+    />
+  </div>
+  <div class="form-example">
+    <label for="surname">Enter your Surname: </label>
+    <input
+      [(ngModel)]="user.surname"
+      type="text"
+      name="surname"
+      id="surname"
+      [ngClass]="{ 'is-invalid': f.submitted }"
+    />
+  </div>
+  <div class="form-example">
+    <label for="name">Enter your Email: </label>
+    <input
+      [(ngModel)]="user.email"
+      type="email"
+      name="email"
+      id="email"
+      required
+      [ngClass]="{ 'is-invalid': f.submitted }"
+    />
+  </div>
+  <div class="form-example">
+    <label for="username">Enter your Username: </label>
+    <input
+      [(ngModel)]="user.username"
+      type="text"
+      name="username"
+      id="username"
+      required
+      [ngClass]="{ 'is-invalid': f.submitted }"
+    />
+  </div>
+  <div class="form-example">
+    <label for="password">Enter your Password: </label>
+    <input
+      [(ngModel)]="user.password"
+      type="password"
+      name="password"
+      id="password"
+      required
+      [ngClass]="{ 'is-invalid': f.submitted }"
+    />
+  </div>
+  <div class="form-example">
+    <label for="confirmPassword">Confirm Password: </label>
+    <input
+      type="password"
+      name="confirmPassword"
+      id="confirmPassword"
+      required
+      [ngClass]="{ 'is-invalid': f.submitted }"
+    />
+  </div>
+  <div class="form-example">
+    <input type="submit" value="Register" />
+  </div>
+</form>

@@ -1,0 +1,9 @@
+<div>
+  <div *ngIf="getAuthenticated() && getUsername()">
+    Welcome back {{ getUsername() }}!
+  </div>
+
+  <button *ngIf="!getAuthenticated()" (click)="gotoLogin()">Login</button>
+  <button *ngIf="!getAuthenticated()" (click)="gotoLogin()">Register</button>
+  <button *ngIf="getAuthenticated()" (click)="logout()">Logout</button>
+</div>
