@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../_services/auth.service';
-import { ProxyService } from '../_services/proxy.service';
-import { StorageService } from '../_services/storage.service';
-import { UserLoginDto } from '../model/userDto';
+import { Router } from '@angular/router';
+import { UserLoginDto } from '../../models/userDto';
+import { AuthService } from '../../services/auth.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -22,14 +22,13 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private storageService: StorageService,
-    private readonly proxyService: ProxyService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
-      this.roles = this.storageService.getUser().roles;
-      this.changeAuthenticated();
+      this.roles = this.storageService.getUser()!.roles;
     }
   }
 
@@ -41,27 +40,19 @@ export class LoginComponent implements OnInit {
         this.storageService.saveUser(data);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
-        this.roles = this.storageService.getUser().roles;
-        this.changeAuthenticated();
-        // this.reloadPage();
+        this.roles = data.roles;
+        this.router.navigate(['/home']);
       },
       error: (err) => {
         this.errorMessage = err.error.message;
         this.isLoginFailed = true;
       },
     });
+
     console.log(response);
   }
 
   reloadPage(): void {
     window.location.reload();
-  }
-
-  changeAuthenticated() {
-    console.log(this.user);
-    console.log('updated authentication');
-    this.proxyService.isAuthenticated = true;
-    this.proxyService.username = this.user.username;
-    console.log(this.proxyService);
   }
 }

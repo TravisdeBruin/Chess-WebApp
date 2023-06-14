@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../_services/auth.service';
-import { UserDto } from '../model/userDto';
+import { UserRegisterDto } from '../../models/userDto';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -9,7 +9,7 @@ import { UserDto } from '../model/userDto';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  user: UserDto = {
+  user: UserRegisterDto = {
     name: '',
     surname: '',
     username: '',

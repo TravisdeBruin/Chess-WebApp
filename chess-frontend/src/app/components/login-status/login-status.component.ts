@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ProxyService } from '../_services/proxy.service';
+import { StorageService } from '../../services/storage.service';
 
 @Component({
   selector: 'app-login-status',
@@ -8,17 +8,15 @@ import { ProxyService } from '../_services/proxy.service';
   styleUrls: ['./login-status.component.scss'],
 })
 export class LoginStatusComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private readonly proxyService: ProxyService
-  ) {}
+  constructor(private router: Router, private storageService: StorageService) {}
 
-  getAuthenticated() {
-    return this.proxyService.isAuthenticated;
+  isAuthenticated() {
+    return this.storageService.isLoggedIn();
   }
 
   getUsername() {
-    return this.proxyService.username;
+    const user = this.storageService.getUser();
+    return user!.username;
   }
 
   ngOnInit(): void {}
@@ -31,6 +29,12 @@ export class LoginStatusComponent implements OnInit {
   gotoRegister() {
     this.router.navigate(['/register']);
   }
+  gotoProfile() {
+    this.router.navigate(['/profile']);
+  }
 
-  logout() {}
+  logout() {
+    this.storageService.clean();
+    this.router.navigate(['/login']);
+  }
 }

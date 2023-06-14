@@ -1,0 +1,33 @@
+<div>
+  <div *ngIf="isAuthenticated() && getUsername()">
+    Welcome back {{ getUsername() }}!
+  </div>
+  <div class="profile-icon">
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon class="account-display">account_circle</mat-icon>
+    </button>
+    <mat-menu
+      class="mat-menu"
+      yPosition="below"
+      xPosition="after"
+      #menu="matMenu"
+    >
+      <button mat-menu-item *ngIf="!isAuthenticated()" (click)="gotoRegister()">
+        <mat-icon>person_add</mat-icon>
+        <span>Register</span>
+      </button>
+      <button mat-menu-item *ngIf="!isAuthenticated()" (click)="gotoLogin()">
+        <mat-icon aria-hidden="false">login</mat-icon>
+        <span>Login</span>
+      </button>
+      <button mat-menu-item *ngIf="isAuthenticated()" (click)="logout()">
+        <mat-icon aria-hidden="false">logout</mat-icon>
+        <span>Logout</span>
+      </button>
+      <button mat-menu-item *ngIf="isAuthenticated()" (click)="gotoProfile()">
+        <mat-icon aria-hidden="false">account_circle</mat-icon>
+        <span>Profile</span>
+      </button>
+    </mat-menu>
+  </div>
+</div>

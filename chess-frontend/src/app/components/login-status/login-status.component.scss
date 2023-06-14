@@ -1,0 +1,11 @@
+.account-display {
+  transform: scale(2.5);
+}
+.profile-icon {
+  float: right;
+  padding-right: 100px;
+}
+
+::ng-deep .mat-menu {
+  margin: 100px;
+}

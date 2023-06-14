@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserDto, UserLoginDto } from '../model/userDto';
+import { UserLoginDto, UserRegisterDto } from '../models/userDto';
 
 const AUTH_API = 'http://localhost:8080/api/auth/';
 
@@ -19,7 +19,7 @@ export class AuthService {
     return this.http.post(AUTH_API + 'signin', user, httpOptions);
   }
 
-  register(user: UserDto): Observable<any> {
+  register(user: UserRegisterDto): Observable<any> {
     return this.http.post(AUTH_API + 'register', user, httpOptions);
   }
 }
