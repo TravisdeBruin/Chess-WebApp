@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
     public UserDto saveNewUser(UserDto userDto) {
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         User newUser = userMapper.userDtoToUser(userDto);
+        newUser.setElo(200);
         newUser.setPassword(encodedPassword);
 
         Set<String> strRoles = userDto.getRole();

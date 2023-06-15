@@ -26,10 +26,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable=false)
     private String name;
 
-    @Column(nullable=false)
     private String surname;
 
     @Column(nullable=false)
@@ -41,7 +39,6 @@ public class User {
     @Column(nullable=false)
     private String password;
 
-    @Column(nullable = false)
     private Integer elo;
 
     @CreationTimestamp

@@ -59,3 +59,9 @@
     - see previous games
     - winrate
     - email validation
+
+# Attribution
+
+## Chesslogo
+
+<a href="https://www.flaticon.com/free-icons/chess" title="chess icons">Chess icons created by Iconpro86 - Flaticon</a>

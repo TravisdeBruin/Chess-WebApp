@@ -18,6 +18,14 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SidePanelComponent } from './components/side-panel/side-panel.component';
+import { BoardComponent } from './components/chess/board/board.component';
+import { SquareComponent } from './components/chess/square/square.component';
+import { KnightComponent } from './components/chess/pieces/knight/knight.component';
+import { RookComponent } from './components/chess/pieces/rook/rook.component';
+import { BishopComponent } from './components/chess/pieces/bishop/bishop.component';
+import { QueenComponent } from './components/chess/pieces/queen/queen.component';
+import { KingComponent } from './components/chess/pieces/king/king.component';
+import { PawnComponent } from './components/chess/pieces/pawn/pawn.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +38,14 @@ import { SidePanelComponent } from './components/side-panel/side-panel.component
     FooterComponent,
     HeaderComponent,
     SidePanelComponent,
+    BoardComponent,
+    SquareComponent,
+    KnightComponent,
+    RookComponent,
+    BishopComponent,
+    QueenComponent,
+    KingComponent,
+    PawnComponent,
   ],
   imports: [
     BrowserModule,

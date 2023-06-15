@@ -1,0 +1,82 @@
+<div class="board">
+  <div class="square" *ngFor="let i of sixtyFour">
+    <app-square *ngIf="xy(i) as pos">
+      <!-- Rooks -->
+
+      <app-rook
+        [blackPiece]="true"
+        *ngIf="pos.x === (brPos1$ | async)!.x && pos.y === (brPos1$ | async)!.y"
+      ></app-rook>
+      <app-rook
+        [blackPiece]="true"
+        *ngIf="pos.x === (brPos2$ | async)!.x && pos.y === (brPos2$ | async)!.y"
+      ></app-rook>
+      <app-rook
+        [blackPiece]="false"
+        *ngIf="pos.x === (wrPos1$ | async)!.x && pos.y === (wrPos1$ | async)!.y"
+      ></app-rook>
+      <app-rook
+        [blackPiece]="false"
+        *ngIf="pos.x === (wrPos2$ | async)!.x && pos.y === (wrPos2$ | async)!.y"
+      ></app-rook>
+
+      <!-- Knights -->
+
+      <app-knight
+        [blackPiece]="true"
+        *ngIf="pos.x === (bnPos1$ | async)!.x && pos.y === (bnPos1$ | async)!.y"
+      ></app-knight>
+      <app-knight
+        [blackPiece]="true"
+        *ngIf="pos.x === (bnPos2$ | async)!.x && pos.y === (bnPos2$ | async)!.y"
+      ></app-knight>
+      <app-knight
+        [blackPiece]="false"
+        *ngIf="pos.x === (wnPos1$ | async)!.x && pos.y === (wnPos1$ | async)!.y"
+      ></app-knight>
+      <app-knight
+        [blackPiece]="false"
+        *ngIf="pos.x === (wnPos2$ | async)!.x && pos.y === (wnPos2$ | async)!.y"
+      ></app-knight>
+
+      <!-- Bishops -->
+
+      <app-bishop
+        [blackPiece]="true"
+        *ngIf="pos.x === (bbPos1$ | async)!.x && pos.y === (bbPos1$ | async)!.y"
+      ></app-bishop>
+      <app-bishop
+        [blackPiece]="true"
+        *ngIf="pos.x === (bbPos2$ | async)!.x && pos.y === (bbPos2$ | async)!.y"
+      ></app-bishop>
+      <app-bishop
+        [blackPiece]="false"
+        *ngIf="pos.x === (wbPos1$ | async)!.x && pos.y === (wbPos1$ | async)!.y"
+      ></app-bishop>
+      <app-bishop
+        [blackPiece]="false"
+        *ngIf="pos.x === (wbPos2$ | async)!.x && pos.y === (wbPos2$ | async)!.y"
+      ></app-bishop>
+
+      <!-- Queens -->
+      <app-queen
+        [blackPiece]="true"
+        *ngIf="pos.x === (bqPos$ | async)!.x && pos.y === (bqPos$ | async)!.y"
+      ></app-queen>
+      <app-queen
+        [blackPiece]="false"
+        *ngIf="pos.x === (wqPos$ | async)!.x && pos.y === (wqPos$ | async)!.y"
+      ></app-queen>
+
+      <!-- Kings -->
+      <app-king
+        [blackPiece]="true"
+        *ngIf="pos.x === (bkPos$ | async)!.x && pos.y === (bkPos$ | async)!.y"
+      ></app-king>
+      <app-king
+        [blackPiece]="false"
+        *ngIf="pos.x === (wkPos$ | async)!.x && pos.y === (wkPos$ | async)!.y"
+      ></app-king>
+    </app-square>
+  </div>
+</div>

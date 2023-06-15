@@ -1,12 +1,11 @@
 package com.practice.chesswebapp.gameLogic;
 
-import jakarta.validation.constraints.NotNull;
+import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 public class Square {
-     private int x;
-     private int y;
+     private Position position;
      private Piece piece;
 }

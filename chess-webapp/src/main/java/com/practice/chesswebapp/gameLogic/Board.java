@@ -1,61 +1,88 @@
 package com.practice.chesswebapp.gameLogic;
 
+import com.practice.chesswebapp.enums.EColour;
 import com.practice.chesswebapp.gameLogic.Pieces.*;
+import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 
 public class Board {
-    Square[][] squares;
 
+    private Row[] rows;
     public Board()
     {
-        this.resetBoard();
+        this.initBoard();
     }
 
-    public Square getSquare(int x, int y) throws Exception {
-
-        if (x < 0 || x > 7 || y < 0 || y > 7) {
-            throw new Exception("Index out of bound");
+    public void initBoard() {
+        this.rows = new Row[8];
+        this.rows[0] = new Row(new Piece[]{
+                new Rook(EColour.BLACK),
+                new Knight(EColour.BLACK),
+                new Bishop(EColour.BLACK),
+                new Queen(EColour.BLACK),
+                new King(EColour.BLACK),
+                new Bishop(EColour.BLACK),
+                new Knight(EColour.BLACK),
+                new Rook(EColour.BLACK)
+        }, 0);
+        this.rows[1] = new Row(new Piece[]{
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK),
+                new Pawn(EColour.BLACK)
+        }, 1);
+        for (int i=2; i<6; i++) {
+            this.rows[i] = new Row(i);
         }
-
-        return squares[x][y];
+        this.rows[6] = new Row(new Piece[]{
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE),
+                new Pawn(EColour.WHITE)
+        }, 6);
+        this.rows[7] = new Row(new Piece[]{
+                new Rook(EColour.WHITE),
+                new Knight(EColour.WHITE),
+                new Bishop(EColour.WHITE),
+                new Queen(EColour.WHITE),
+                new King(EColour.WHITE),
+                new Bishop(EColour.WHITE),
+                new Knight(EColour.WHITE),
+                new Rook(EColour.WHITE)
+        }, 7);
     }
 
-    public void resetBoard()
-    {
-        // initialize white pieces
-        squares[0][0] = new Square(0, 0, new Rook(true));
-        squares[0][1] = new Square(0, 1, new Knight(true));
-        squares[0][2] = new Square(0, 2, new Bishop(true));
-        squares[0][3] = new Square(0, 2, new King(true));
-        squares[0][4] = new Square(0, 2, new Queen(true));
-        squares[0][5] = new Square(0, 2, new Bishop(true));
-        squares[0][6] = new Square(0, 2, new Knight(true));
-        squares[0][7] = new Square(0, 2, new Rook(true));
-
-        // initialize white pawns
-        for (int i = 0; i < 8; i++) {
-        squares[1][i] = new Square(1, 0, new Pawn(true));
+    public Piece getPieceAt(Position position) {
+        if (!position.isWithinBoard()) {
+            return null;
         }
+        return this.rows[position.getY()].getSquares()[position.getX()].getPiece();
+    }
 
-        // initialize black pieces
-        squares[7][0] = new Square(7, 0, new Rook(false));
-        squares[7][1] = new Square(7, 1, new Knight(false));
-        squares[7][2] = new Square(7, 2, new Bishop(false));
-        squares[7][3] = new Square(7, 2, new King(false));
-        squares[7][4] = new Square(7, 2, new Queen(false));
-        squares[7][5] = new Square(7, 2, new Bishop(false));
-        squares[7][6] = new Square(7, 2, new Knight(false));
-        squares[7][7] = new Square(7, 2, new Rook(false));
+    public void setPieceAt(Position position, Piece piece) {
+        this.rows[position.getY()].getSquares()[position.getX()].setPiece(piece);
+    }
 
-        // initialize black pawns
-        for (int i = 0; i < 8; i++) {
-            squares[6][0] = new Square(6, i, new Pawn(false));
-        }
-
-        // initialize remaining squares without any piece
-        for (int i = 2; i < 6; i++) {
-            for (int j = 0; j < 8; j++) {
-                squares[i][j] = new Square(i, j, null);
+    public Position getKingPosition(EColour color) {
+        for (int x=0; x<=7; x++) {
+            for (int y=0; y<=7; y++) {
+                Piece piece = this.rows[y].getSquares()[x].getPiece();
+                if (piece != null && piece.getClass().equals(King.class) && piece.getColor() == color) {
+                    return new Position(x, y);
+                }
             }
         }
+        return null;
+    }
+
+    public Row[] getRows() {
+        return this.rows;
     }
 }
