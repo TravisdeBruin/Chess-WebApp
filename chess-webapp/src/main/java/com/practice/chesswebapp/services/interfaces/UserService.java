@@ -17,7 +17,6 @@ public interface UserService {
     List<UserDto> getAllUsers();
     Boolean deleteByUserId(Long id);
     Optional<UserDto> updateByUserId(Long id, UserDto userDto);
-
     Boolean existsByUsername(String username);
     Boolean existsByEmail(String email);
 }
