@@ -1,6 +1,6 @@
 package com.practice.chesswebapp.security.jwt;
 
-import com.practice.chesswebapp.services.UserDetailsImpl;
+import com.practice.chesswebapp.services.implementations.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -2,18 +2,16 @@ package com.practice.chesswebapp.controllers;
 
 import com.practice.chesswebapp.responses.JwtResponse;
 import com.practice.chesswebapp.dtos.UserDto;
-import com.practice.chesswebapp.repositories.RoleRepository;
 import com.practice.chesswebapp.responses.MessageResponse;
 import com.practice.chesswebapp.security.jwt.JwtUtils;
-import com.practice.chesswebapp.services.UserDetailsImpl;
-import com.practice.chesswebapp.services.UserService;
+import com.practice.chesswebapp.services.implementations.UserDetailsImpl;
+import com.practice.chesswebapp.services.interfaces.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

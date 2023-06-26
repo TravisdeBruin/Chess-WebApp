@@ -1,9 +1,10 @@
-package com.practice.chesswebapp.gameLogic;
+package com.practice.chesswebapp.gameLogic.models;
 
 import com.practice.chesswebapp.enums.EColour;
 import com.practice.chesswebapp.enums.EGameState;
-import com.practice.chesswebapp.gameLogic.Pieces.King;
-import com.practice.chesswebapp.gameLogic.Pieces.Rook;
+import com.practice.chesswebapp.enums.EGameType;
+import com.practice.chesswebapp.gameLogic.pieces.King;
+import com.practice.chesswebapp.gameLogic.pieces.Rook;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 import lombok.Data;
 
@@ -18,21 +19,22 @@ public class Game {
     private Board board;
     private Player whitePlayer;
     private Player blackPlayer;
-    private String gameId;
+    private Long gameId;
     private EGameState gameState;
     private EColour turnColor;
-    private boolean isPromotion;
     private Movement lastMovement;
     private Piece lastPieceAtPosition1;
     private Piece lastPieceAtPosition2;
     private LocalDateTime dateStarted;
+    private ArrayList<String> gameMoves;
+    private ArrayList<String[][]> gameStates;
+    private EGameType gameType;
 
-    public Game(String uuid) {
+    public Game(Long id) {
         this.board = new Board();
-        this.gameId = uuid;
+        this.gameId = id;
         this.gameState = STARTED;
         this.turnColor = WHITE;
-        this.isPromotion = false;
         this.dateStarted = LocalDateTime.now();
     }
 
@@ -47,55 +49,56 @@ public class Game {
     public Player getPlayerById(Long id) {
         if (this.whitePlayer != null && this.whitePlayer.getUser().getId().equals(id)) {
             return whitePlayer;
-        }else if (this.blackPlayer != null && this.blackPlayer.getUser().getId().equals(id)) {
+        } else if (this.blackPlayer != null && this.blackPlayer.getUser().getId().equals(id)) {
             return blackPlayer;
-        }else {
+        } else {
             return null;
         }
     }
 
     private void updateStatus() throws Exception {
-        if (this.isOnCheckMate(WHITE) || this.isOnCheckMate(BLACK)) {
+        if (this.isInCheckMate(WHITE) || this.isInCheckMate(BLACK)) {
             this.gameState = CHECKMATE;
-        } else if (this.isOnCheck(WHITE) || this.isOnCheck(BLACK)) {
+        } else if (this.isInCheck(WHITE) || this.isInCheck(BLACK)) {
             this.gameState = CHECK;
         } else {
             this.gameState = STARTED;
         }
     }
 
-    private boolean isOnCheck(EColour eColour) {
+    private boolean isInCheck(EColour eColour) {
         return false;
     }
 
-    private boolean isOnCheckMate(EColour eColour) {
+    private boolean isInCheckMate(EColour eColour) {
         return false;
     }
 
-    public boolean movePiece(Movement movement, boolean updateStatus) throws Exception{
-        Piece piece = this.board.getPieceAt(movement.getFromPosition());
+    public boolean movePiece(Movement move, boolean updateStatus) throws Exception {
+        Piece piece = this.board.getPieceAt(move.getFromPosition());
         if (piece.getColor() != this.turnColor) {
             return false;
         }
-        Movement possibleMovements[] = this.getAllPossibleMovements(movement.getFromPosition());
-        for(Movement possibleMovement: possibleMovements) {
+        Movement possibleMoves[] = this.getAllPossibleMoves(move.getFromPosition());
+        for (Movement possibleMove: possibleMoves) {
             EColour enemyColor = this.getEnemyColor(piece.getColor());
-            if (movement.equals(possibleMovement) &&
-                    !this.isOnCheckAfterMovement(movement) &&
+            if (move.equals(possibleMove) &&
+                    !this.isInCheckAfterMovement(move) &&
                     this.gameState != CHECKMATE) {
-                if (this.isCastling(movement)) {
-                    this.doCastling(movement);
+                if (this.isCastling(move)) {
+                    this.doCastling(move);
                 } else {
-                    this.board.setPieceAt(movement.getFromPosition(), null);
-                    this.board.setPieceAt(movement.getToPosition(), piece);
+                    this.board.setPieceAt(move.getFromPosition(), null);
+                    this.board.setPieceAt(move.getToPosition(), piece);
                 }
-                Piece pieceAfterMove = this.board.getPieceAt(movement.getToPosition());
+                Piece pieceAfterMove = this.board.getPieceAt(move.getToPosition());
                 pieceAfterMove.setMoved(true);
                 this.switchTurnColor();
-                this.isOnCheck(this.getEnemyColor(piece.getColor()));
+                this.isInCheck(this.getEnemyColor(piece.getColor()));
+                this.updateStatus();
                 if (updateStatus) {
                     this.updateStatus();
-                    this.updateIsPromotion(movement);
+                    this.updateIsPromotion(move);
                 }
                 return true;
             }
@@ -103,24 +106,34 @@ public class Game {
         return false;
     }
 
-    public Movement[] getAllPossibleMovements(Position position) {
+    private void updateIsPromotion(Movement move) {
+    }
+
+    private void doCastling(Movement movement) {
+    }
+
+    private boolean isInCheckAfterMovement(Movement movement) {
+        return false;
+    }
+
+    public Movement[] getAllPossibleMoves(Position position) {
         ArrayList<Movement> movements = new ArrayList<Movement>();
         Piece piece = this.board.getPieceAt(position);
         if (piece != null) {
             Direction directions[] = piece.getDirections(this.board, position);
             for (Direction direction: directions) {
                 Position positionFrom = position;
-                Position positionTo = new Position(positionFrom.getX()+direction.getX(), positionFrom.getY()+direction.getY());
+                Position positionTo = new Position(positionFrom.getX() + direction.getX(), positionFrom.getY() + direction.getY());
                 int i = 0;
                 int limit = direction.getLimit();
-                while (this.canMoveTo(piece, positionTo) && i<limit) {
+                while (this.canMoveTo(piece, positionTo) && i < limit) {
                     Piece pieceAtDestination = this.board.getPieceAt(positionTo);
-                    if (pieceAtDestination != null && piece.getColor()!=pieceAtDestination.getColor()) {
+                    if (pieceAtDestination != null && piece.getColor() != pieceAtDestination.getColor()) {
                         limit = i;
                     }
                     movements.add(new Movement(position, positionTo));
                     positionFrom = positionTo;
-                    positionTo = new Position(positionFrom.getX()+direction.getX(), positionFrom.getY()+direction.getY());
+                    positionTo = new Position(positionFrom.getX() + direction.getX(), positionFrom.getY() + direction.getY());
                     i++;
                 }
             }
@@ -143,5 +156,14 @@ public class Game {
         } else {
             return false;
         }
+    }
+
+    private boolean isCastling(Movement movement) {
+        if (this.board.getPieceAt(movement.getFromPosition()).getClass().equals(King.class) &&
+                (movement.getFromPosition().getX() == movement.getToPosition().getX() - 2 ||
+                        movement.getFromPosition().getX() == movement.getToPosition().getX() + 2)) {
+            return true;
+        }
+        return false;
     }
 }

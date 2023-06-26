@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.services;
+package com.practice.chesswebapp.services.implementations;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.practice.chesswebapp.entities.User;

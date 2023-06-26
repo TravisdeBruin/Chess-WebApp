@@ -2,9 +2,7 @@ package com.practice.chesswebapp.config;
 
 import com.practice.chesswebapp.security.jwt.AuthEntryPointJwt;
 import com.practice.chesswebapp.security.jwt.AuthTokenFilter;
-import com.practice.chesswebapp.services.UserDetailsServiceImpl;
-import com.practice.chesswebapp.services.UserServiceImpl;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.practice.chesswebapp.services.implementations.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
