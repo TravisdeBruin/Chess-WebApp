@@ -3,10 +3,8 @@ package com.practice.chesswebapp.controllers;
 import com.practice.chesswebapp.dtos.UserDto;
 import com.practice.chesswebapp.exceptions.NotFoundException;
 import com.practice.chesswebapp.responses.MessageResponse;
-import com.practice.chesswebapp.services.UserService;
-import jakarta.validation.Valid;
+import com.practice.chesswebapp.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,23 +20,23 @@ public class UserController {
     private final UserService userService;
 
     @DeleteMapping(USER_PATH_ID)
-    public ResponseEntity deleteUserById(@PathVariable("userId") long userId) {
+    public ResponseEntity<MessageResponse> deleteUserById(@PathVariable("userId") long userId) {
 
         if (!userService.deleteByUserId(userId)) {
             throw new NotFoundException();
         }
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(USER_PATH_ID)
-    public ResponseEntity updateUserByID(@PathVariable("userId") long userId,
+    public ResponseEntity<MessageResponse> updateUserByID(@PathVariable("userId") long userId,
                                              @RequestBody UserDto userDto){
 
         if (userService.updateByUserId(userId, userDto).isEmpty()){
             throw new NotFoundException();
         }
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping(USER_PATH)

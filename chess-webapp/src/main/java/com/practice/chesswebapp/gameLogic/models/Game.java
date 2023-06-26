@@ -1,14 +1,16 @@
-package com.practice.chesswebapp.gameLogic;
+package com.practice.chesswebapp.gameLogic.models;
 
 import com.practice.chesswebapp.enums.EColour;
 import com.practice.chesswebapp.enums.EGameState;
-import com.practice.chesswebapp.gameLogic.Pieces.King;
-import com.practice.chesswebapp.gameLogic.Pieces.Rook;
+import com.practice.chesswebapp.enums.EGameType;
+import com.practice.chesswebapp.gameLogic.pieces.King;
+import com.practice.chesswebapp.gameLogic.pieces.Rook;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.practice.chesswebapp.enums.EGameState.*;
 import static com.practice.chesswebapp.enums.EColour.*;
@@ -18,21 +20,22 @@ public class Game {
     private Board board;
     private Player whitePlayer;
     private Player blackPlayer;
-    private String gameId;
+    private Long gameId;
     private EGameState gameState;
     private EColour turnColor;
-    private boolean isPromotion;
     private Movement lastMovement;
     private Piece lastPieceAtPosition1;
     private Piece lastPieceAtPosition2;
     private LocalDateTime dateStarted;
+    private ArrayList<String> gameMoves;
+    private ArrayList<String[][]> gameStates;
+    private EGameType gameType;
 
-    public Game(String uuid) {
+    public Game(Long id) {
         this.board = new Board();
-        this.gameId = uuid;
+        this.gameId = id;
         this.gameState = STARTED;
         this.turnColor = WHITE;
-        this.isPromotion = false;
         this.dateStarted = LocalDateTime.now();
     }
 

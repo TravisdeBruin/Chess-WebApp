@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.services;
+package com.practice.chesswebapp.services.implementations;
 
 import com.practice.chesswebapp.entities.User;
 import com.practice.chesswebapp.repositories.UserRepository;

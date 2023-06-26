@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.gameLogic;
+package com.practice.chesswebapp.gameLogic.models;
 
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 import lombok.*;

@@ -1,9 +1,9 @@
-package com.practice.chesswebapp.gameLogic.Pieces;
+package com.practice.chesswebapp.gameLogic.pieces;
 
 import com.practice.chesswebapp.enums.EColour;
-import com.practice.chesswebapp.gameLogic.Board;
-import com.practice.chesswebapp.gameLogic.Direction;
-import com.practice.chesswebapp.gameLogic.Position;
+import com.practice.chesswebapp.gameLogic.models.Board;
+import com.practice.chesswebapp.gameLogic.models.Direction;
+import com.practice.chesswebapp.gameLogic.models.Position;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 import lombok.Data;
 

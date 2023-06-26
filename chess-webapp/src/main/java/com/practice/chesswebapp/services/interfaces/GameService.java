@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.services;
+package com.practice.chesswebapp.services.interfaces;
 
 import com.practice.chesswebapp.dtos.GameDto;
 import com.practice.chesswebapp.dtos.UserDto;
@@ -11,10 +11,13 @@ import java.util.UUID;
 @Service
 public interface GameService {
 
-    GameDto saveNewGame(GameDto game);
-    Optional<GameDto> getGameByGameId(UUID gameUUID);
-    List<UserDto> getAllGamesByUserId(Long id);
-    Boolean deleteByGameId(Long id);
-    Optional<GameDto> updateByGameId(Long id, UserDto userDto);
-    Boolean existsByGameUUID(UUID gameUUID);
+    GameDto createNewGame(GameDto game);
+    GameDto connectToGame(GameDto game);
+    GameDto sow(Long gameId);
+
+//    Optional<GameDto> getGameByGameId(UUID gameUUID);
+//    List<UserDto> getAllGamesByUserId(Long id);
+//    Boolean deleteByGameId(Long id);
+//    Optional<GameDto> updateByGameId(Long id, UserDto userDto);
+//    Boolean existsByGameUUID(UUID gameUUID);
 }

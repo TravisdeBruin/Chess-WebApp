@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.gameLogic;
+package com.practice.chesswebapp.gameLogic.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

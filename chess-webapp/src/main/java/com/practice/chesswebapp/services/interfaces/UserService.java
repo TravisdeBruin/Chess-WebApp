@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.services;
+package com.practice.chesswebapp.services.interfaces;
 
 import com.practice.chesswebapp.dtos.UserDto;
 import org.springframework.security.core.userdetails.UserDetails;

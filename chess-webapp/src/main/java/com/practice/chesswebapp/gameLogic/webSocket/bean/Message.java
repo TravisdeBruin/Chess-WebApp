@@ -11,8 +11,8 @@ import java.util.UUID;
 public class Message {
     public String action;
     public Movement movement;
-    public UUID gameUUID;
-    public String playerUUID;
+    public Long gameId;
+    public Long playerId;
     public String requestUUID;
     public String promoteTo;
 }

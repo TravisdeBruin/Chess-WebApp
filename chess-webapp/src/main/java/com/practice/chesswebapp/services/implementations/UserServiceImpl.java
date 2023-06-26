@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.services;
+package com.practice.chesswebapp.services.implementations;
 
 import com.practice.chesswebapp.dtos.UserDto;
 import com.practice.chesswebapp.entities.Role;
@@ -7,6 +7,7 @@ import com.practice.chesswebapp.enums.ERole;
 import com.practice.chesswebapp.mappers.UserMapper;
 import com.practice.chesswebapp.repositories.RoleRepository;
 import com.practice.chesswebapp.repositories.UserRepository;
+import com.practice.chesswebapp.services.interfaces.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

@@ -1,7 +1,7 @@
-package com.practice.chesswebapp.gameLogic;
+package com.practice.chesswebapp.gameLogic.models;
 
 import com.practice.chesswebapp.enums.EColour;
-import com.practice.chesswebapp.gameLogic.Pieces.*;
+import com.practice.chesswebapp.gameLogic.pieces.*;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
 
 public class Board {

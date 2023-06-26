@@ -1,8 +1,6 @@
 package com.practice.chesswebapp.security.jwt;
 
-import com.practice.chesswebapp.services.UserDetailsServiceImpl;
-import com.practice.chesswebapp.services.UserService;
-import com.practice.chesswebapp.services.UserServiceImpl;
+import com.practice.chesswebapp.services.implementations.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

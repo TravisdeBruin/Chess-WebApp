@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -29,14 +30,11 @@ public class Game {
     private String gameType;
 
     @Column(nullable=false)
-    private String result;
+    private String status;
 
-    @Column(nullable=false)
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private List<String> moves = new ArrayList<>();
 
-
-//Change to blob storage
     @Column(nullable=false)
     @ElementCollection(targetClass = String.class, fetch = FetchType.EAGER)
     private ArrayList<String[][]> gameStates;

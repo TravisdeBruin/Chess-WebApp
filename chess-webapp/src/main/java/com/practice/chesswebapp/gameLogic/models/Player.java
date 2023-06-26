@@ -1,4 +1,4 @@
-package com.practice.chesswebapp.gameLogic;
+package com.practice.chesswebapp.gameLogic.models;
 
 import com.practice.chesswebapp.entities.User;
 import com.practice.chesswebapp.enums.EColour;
