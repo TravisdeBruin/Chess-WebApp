@@ -1,10 +1,18 @@
 package com.practice.chesswebapp.gameLogic.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@JsonSerialize
+@JsonDeserialize
 public class Position {
     public int x;
     public int y;

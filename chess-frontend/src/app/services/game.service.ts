@@ -1,6 +1,10 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Coord } from '../models/coord';
+import { NewGameDto } from '../models/gameDto';
+
+const GAME_API = 'http://localhost:8080/game/';
 
 @Injectable({
   providedIn: 'root',
@@ -37,10 +41,10 @@ export class GameService {
   wqPos$ = new BehaviorSubject<Coord>({ x: 3, y: 7 });
 
   wkPos$ = new BehaviorSubject<Coord>({ x: 4, y: 7 });
+  constructor(private http: HttpClient) {}
 
-  generatePawns() {
-    for (let i = 0; i < 8; i++) {}
+  createNewGame(gameDto: NewGameDto, headers: HttpHeaders): Observable<any> {
+    console.log('Calling service');
+    return this.http.post(GAME_API + 'create', gameDto, { headers });
   }
-
-  constructor() {}
 }

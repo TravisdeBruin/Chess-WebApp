@@ -11,8 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @JsonSerialize
 @JsonDeserialize
-public class Direction {
-    private int x;
-    private int y;
-    private int limit;
+public class Move {
+    private Position fromPosition;
+    private Position toPosition;
 }

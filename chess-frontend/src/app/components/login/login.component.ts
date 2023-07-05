@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
 
     const response = this.authService.login(user).subscribe({
       next: (data) => {
-        this.storageService.saveUser(data);
+        this.storageService.saveUser(data, data.token);
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.roles = data.roles;

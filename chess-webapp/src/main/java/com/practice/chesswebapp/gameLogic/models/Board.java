@@ -1,9 +1,20 @@
 package com.practice.chesswebapp.gameLogic.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.practice.chesswebapp.enums.EColour;
 import com.practice.chesswebapp.gameLogic.pieces.*;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
+@Data
+@AllArgsConstructor
+@JsonSerialize
+@JsonDeserialize
 public class Board {
 
     private Row[] rows;
@@ -70,11 +81,11 @@ public class Board {
         this.rows[position.getY()].getSquares()[position.getX()].setPiece(piece);
     }
 
-    public Position getKingPosition(EColour color) {
+    public Position getKingPosition(EColour colour) {
         for (int x=0; x<=7; x++) {
             for (int y=0; y<=7; y++) {
                 Piece piece = this.rows[y].getSquares()[x].getPiece();
-                if (piece != null && piece.getClass().equals(King.class) && piece.getColor() == color) {
+                if (piece != null && piece.getClass().equals(King.class) && piece.getColour() == colour) {
                     return new Position(x, y);
                 }
             }

@@ -10,6 +10,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BoardComponent } from './components/chess/board/board.component';
+import { BishopComponent } from './components/chess/pieces/bishop/bishop.component';
+import { KingComponent } from './components/chess/pieces/king/king.component';
+import { KnightComponent } from './components/chess/pieces/knight/knight.component';
+import { PawnComponent } from './components/chess/pieces/pawn/pawn.component';
+import { QueenComponent } from './components/chess/pieces/queen/queen.component';
+import { RookComponent } from './components/chess/pieces/rook/rook.component';
+import { SquareComponent } from './components/chess/square/square.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { HomeComponent } from './components/home/home.component';
@@ -18,14 +26,6 @@ import { LoginComponent } from './components/login/login.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { RegisterComponent } from './components/register/register.component';
 import { SidePanelComponent } from './components/side-panel/side-panel.component';
-import { BoardComponent } from './components/chess/board/board.component';
-import { SquareComponent } from './components/chess/square/square.component';
-import { KnightComponent } from './components/chess/pieces/knight/knight.component';
-import { RookComponent } from './components/chess/pieces/rook/rook.component';
-import { BishopComponent } from './components/chess/pieces/bishop/bishop.component';
-import { QueenComponent } from './components/chess/pieces/queen/queen.component';
-import { KingComponent } from './components/chess/pieces/king/king.component';
-import { PawnComponent } from './components/chess/pieces/pawn/pawn.component';
 
 @NgModule({
   declarations: [

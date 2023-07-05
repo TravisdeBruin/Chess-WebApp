@@ -1,9 +1,19 @@
 package com.practice.chesswebapp.gameLogic.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 
 @Data
+@JsonSerialize
+@JsonDeserialize
+@AllArgsConstructor
+@NoArgsConstructor
 public class Row {
     Square[] squares;
 

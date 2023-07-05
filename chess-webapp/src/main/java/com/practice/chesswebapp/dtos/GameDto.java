@@ -1,5 +1,7 @@
 package com.practice.chesswebapp.dtos;
 
+import com.practice.chesswebapp.enums.EGameState;
+import com.practice.chesswebapp.enums.EGameType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,9 +17,9 @@ import java.util.List;
 public class GameDto {
     private Long id;
 
-    private String gameType;
+    private EGameType gameType;
 
-    private String status;
+    private EGameState status;
 
     private List<String> moves = new ArrayList<>();
 

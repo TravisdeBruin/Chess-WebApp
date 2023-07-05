@@ -1,22 +1,33 @@
 package com.practice.chesswebapp.gameLogic.pieces;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.practice.chesswebapp.enums.EColour;
 import com.practice.chesswebapp.gameLogic.models.Board;
 import com.practice.chesswebapp.gameLogic.models.Direction;
 import com.practice.chesswebapp.gameLogic.models.Position;
 import com.practice.chesswebapp.gameLogic.interfaces.Piece;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@JsonSerialize
+@JsonDeserialize
+@JsonTypeName("Rook")
 public class Rook implements Piece {
     //    private String htmlCode;
-    private EColour color;
+    private EColour colour;
     private boolean moved;
 
-    public Rook(EColour color) {
-        this.color = color;
+    public Rook(EColour colour) {
+        this.colour = colour;
 //        this.initHtmlCode();
     }
 
